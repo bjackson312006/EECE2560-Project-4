@@ -13,28 +13,42 @@
 board::board(void)
 {
     return;
-}
+} // end board constructor
 
 board::board(const char *filename)
 {
     init(filename);
-}
+} // end board constructor
 
 /* Helper converters used by conflict arrays. */
 static int _digit_toIndex(char digit)
+/* Converts a digit character into 0-based index
+ * parameters - digit: character expected in range '1'..'9'
+ * assumptions - caller passes a valid digit character
+ */
 {
     return (digit - '0') - 1;
-}
+} // end _digit_toIndex
 
 static int _square_toIndex(int row, int col)
+/* Converts row and col into 0-based 3x3 square index
+ * parameters - row: board row index
+ *              col: board col index
+ * assumptions - row and col are in range 0..8
+ */
 {
     return (row / 3) * 3 + (col / 3);
-}
+} // end _square_toIndex
 
 static bool _cell_position_isInBounds(int row, int col)
+/* Checks whether board position indices are in bounds
+ * parameters - row: board row index
+ *              col: board col index
+ * assumptions - row and col may be any int values
+ */
 {
     return ((row >= 0) && (row < 9) && (col >= 0) && (col < 9));
-}
+} // end _cell_position_isInBounds
 
 board::Error board::init(const char *filename)
 {
@@ -123,7 +137,7 @@ board::Error board::init(const char *filename)
     /* Return successful. */
     this->_is_initialized = true;
     return BOARD_OK;
-}
+} // end init
 
 board::Error board::init_from_serialized_board_line(
     const std::string &serialized_board_line)
@@ -154,7 +168,7 @@ board::Error board::init_from_serialized_board_line(
 
     this->_is_initialized = true;
     return BOARD_OK;
-}
+} // end init_from_serialized_board_line
 
 board::Error board::_validate_uninitialized_for_serialized_line_init(void)
 /* Returns BOARD_OK only when board is not already initialized */
@@ -168,19 +182,19 @@ board::Error board::_validate_uninitialized_for_serialized_line_init(void)
     }
 
     return BOARD_OK;
-}
+} // end _validate_uninitialized_for_serialized_line_init
 
 bool board::_serialized_character_is_blank(char ch)
 /* Returns true when ch is '.' */
 {
     return (ch == '.');
-}
+} // end _serialized_character_is_blank
 
 bool board::_serialized_character_is_digit(char ch)
 /* Returns true when ch is between '1' and '9' */
 {
     return (ch >= '1' && ch <= '9');
-}
+} // end _serialized_character_is_digit
 
 void board::_compute_row_and_col_from_serialized_index(
     int serialized_index,
@@ -190,7 +204,7 @@ void board::_compute_row_and_col_from_serialized_index(
 {
     row = serialized_index / 9;
     col = serialized_index % 9;
-}
+} // end _compute_row_and_col_from_serialized_index
 
 board::Error board::_validate_serialized_digit_conflicts(
     int row,
@@ -222,13 +236,13 @@ board::Error board::_validate_serialized_digit_conflicts(
     }
 
     return BOARD_OK;
-}
+} // end _validate_serialized_digit_conflicts
 
 void board::_write_serialized_blank_to_board(int row, int col)
 /* Writes a blank marker to board cell row/col */
 {
     this->_v[row][col] = '.';
-}
+} // end _write_serialized_blank_to_board
 
 void board::_write_serialized_digit_to_board_and_conflict_arrays(
     int row,
@@ -242,7 +256,7 @@ void board::_write_serialized_digit_to_board_and_conflict_arrays(
     this->_valid_row[row][digit_i] = true;
     this->_valid_col[col][digit_i] = true;
     this->_valid_square[square_i][digit_i] = true;
-}
+} // end _write_serialized_digit_to_board_and_conflict_arrays
 
 board::Error board::_process_single_serialized_character_and_advance_count(
     char ch,
@@ -274,7 +288,7 @@ board::Error board::_process_single_serialized_character_and_advance_count(
     _write_serialized_digit_to_board_and_conflict_arrays(row, col, ch);
     parsed_cell_count++;
     return BOARD_OK;
-}
+} // end _process_single_serialized_character_and_advance_count
 
 board::Error board::_parse_serialized_line_and_update_board_state(
     const std::string &serialized_board_line,
@@ -297,7 +311,7 @@ board::Error board::_parse_serialized_line_and_update_board_state(
     }
 
     return BOARD_OK;
-}
+} // end _parse_serialized_line_and_update_board_state
 
 void board::print(void)
 {
@@ -347,7 +361,7 @@ void board::print(void)
         }
         std::cout << "\n";
     }
-}
+} // end print
 
 board::Error board::add(int row, int col, char digit)
 {
@@ -410,7 +424,7 @@ board::Error board::add(int row, int col, char digit)
     this->_valid_col[col][digit_i] = true;
     this->_valid_square[square_i][digit_i] = true;
     return BOARD_OK;
-}
+} // end add
 
 bool board::isSolved(void)
 {
@@ -427,7 +441,7 @@ bool board::isSolved(void)
     }
     std::cout << "Board is solved!" << std::endl;
     return true;
-}
+} // end isSolved
 
 board::Error board::clear(int row, int col)
 {
@@ -464,4 +478,4 @@ board::Error board::clear(int row, int col)
     this->_valid_square[square_i][digit_i] = false;
     this->_v[row][col] = '.';
     return BOARD_OK;
-}
+} // end clear

@@ -11,7 +11,10 @@
 
 static void process_single_serialized_board_line(
    const std::string &serialized_board_line)
-/* Initializes, prints, and checks one board from serialized_board_line */
+/* Initializes, prints, and checks one board from serialized_board_line
+ * parameters - serialized_board_line: one board string from input file
+ * assumptions - serialized_board_line may include non-digit separators
+ */
 {
    board sudoku_board;
 
@@ -26,11 +29,14 @@ static void process_single_serialized_board_line(
    sudoku_board.print();
    sudoku_board.isSolved();
    std::cout << std::endl;
-}
+} // end process_single_serialized_board_line
 
 static void process_all_serialized_board_lines_from_input_file(
    std::ifstream &boards_input_file)
-/* Reads each line from boards_input_file and processes each board line */
+/* Reads each line from boards_input_file and processes each board line
+ * parameters - boards_input_file: open input stream for board lines
+ * assumptions - stream is already opened and readable
+ */
 {
    std::string serialized_board_line;
 
@@ -42,11 +48,15 @@ static void process_all_serialized_board_lines_from_input_file(
       }
 
       process_single_serialized_board_line(serialized_board_line);
-   }
-}
+   } // end while
+} // end process_all_serialized_board_lines_from_input_file
 
 int main(int argc, char *argv[])
-/* Reads a board file and prints each board and conflict state */
+/* Reads a board file and prints each board and conflict state
+ * parameters - argc: number of command-line arguments
+ *              argv: command-line argument array
+ * assumptions - input file path is passed as argv[1]
+ */
 {
    if (argc != 2)
    {
@@ -65,4 +75,4 @@ int main(int argc, char *argv[])
    process_all_serialized_board_lines_from_input_file(boards_input_file);
 
    return 0;
-}
+} // end main
